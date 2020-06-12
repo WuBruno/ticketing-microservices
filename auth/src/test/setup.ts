@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import { app } from '../app';
 
 let mongo: any;
-
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfasdf';
 
@@ -12,7 +11,7 @@ beforeAll(async () => {
 
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   });
 });
 

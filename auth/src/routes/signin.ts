@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
-import { RequestValidationError } from '../errors/request-validation-error';
-import { validateRequest } from '../middlewares/validate-request';
-import { User } from '../models/user';
-import { BadRequestError } from '../errors/bad-request-error';
-import { Password } from '../services/password';
+import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
+
+import { Password } from '../services/password';
+import { User } from '../models/user';
+import { validateRequest } from '../middlewares/validate-request';
+import { BadRequestError } from '../errors/bad-request-error';
+
 const router = express.Router();
 
 router.post(
@@ -20,21 +21,21 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
+
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      throw new BadRequestError('Invalid Credentials');
+      throw new BadRequestError('Invalid credentials');
     }
 
     const passwordsMatch = await Password.compare(
       existingUser.password,
       password,
     );
-
     if (!passwordsMatch) {
       throw new BadRequestError('Invalid Credentials');
     }
 
-    // Generate jwt
+    // Generate JWT
     const userJwt = jwt.sign(
       {
         id: existingUser.id,
@@ -42,10 +43,11 @@ router.post(
       },
       process.env.JWT_KEY!,
     );
+
     // Store it on session object
     req.session!.jwt = userJwt;
 
-    res.send(existingUser);
+    res.status(200).send(existingUser);
   },
 );
 
