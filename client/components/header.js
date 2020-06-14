@@ -1,9 +1,6 @@
-import React from 'react';
 import Link from 'next/link';
 
 export default ({ currentUser }) => {
-  console.log('current user is', currentUser);
-
   const links = [
     !currentUser && { label: 'Sign Up', href: '/auth/signup' },
     !currentUser && { label: 'Sign In', href: '/auth/signin' },
@@ -12,11 +9,14 @@ export default ({ currentUser }) => {
     .filter((linkConfig) => linkConfig)
     .map(({ label, href }) => {
       return (
-        <Link href={href}>
-          <a className="nav-link">{label}</a>
-        </Link>
+        <li key={href} className="nav-item">
+          <Link href={href}>
+            <a className="nav-link">{label}</a>
+          </Link>
+        </li>
       );
     });
+
   return (
     <nav className="navbar navbar-light bg-light">
       <Link href="/">
