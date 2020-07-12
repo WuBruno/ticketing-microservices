@@ -1,11 +1,12 @@
 import request from 'supertest';
 import { app } from '../app';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 export function signin(): string[] {
   // Build a JWT payload. { id, email }
   const payload = {
-    id: '1lk24j124l',
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: 'test@test.com',
   };
 
