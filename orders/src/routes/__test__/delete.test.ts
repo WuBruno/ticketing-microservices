@@ -5,11 +5,13 @@ import { signin } from '../../test/auth-helper';
 import { OrderStatus } from '@bwtickets/common';
 import { Order } from '../../models/order';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose from 'mongoose';
 
 it('marks an order as cancelled', async () => {
   // create a ticket with Ticket Model
   const ticket = Ticket.build({
     title: 'concert',
+    id: mongoose.Types.ObjectId().toHexString(),
     price: 20,
   });
   await ticket.save();
@@ -39,6 +41,7 @@ it('emits a order has been cancelled', async () => {
   // create a ticket with Ticket Model
   const ticket = Ticket.build({
     title: 'concert',
+    id: mongoose.Types.ObjectId().toHexString(),
     price: 20,
   });
   await ticket.save();
